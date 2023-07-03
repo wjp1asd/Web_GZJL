@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections;
-using System.Configuration;
 using System.Data;
-using System.Web;
-using System.Web.Security;
 using System.Web.UI;
-using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
 /*
  * 宋朝云
  * 资产类别
@@ -19,7 +13,7 @@ namespace Web_GZJL.admin
         public string t1 = "", t0 = "";
         protected void Page_Load(object sender, EventArgs e)
         {
-         
+
             //Session["userid"] = "admin";
             //Session["XZQH"] = "130100";
             //Session["userid"] = "zhangsan";
@@ -89,7 +83,7 @@ namespace Web_GZJL.admin
             }
             if (DataBase.Exe_cmd("insert into SYS_ZCLB(id,zclbmc,bz) values('" + DataOper.getlsh("SYS_ZCLB", "id") + "','" + DataOper.setTrueString(txt_lbmc.Text.Trim()) + "','" + DataOper.setTrueString(txt_lbmcbz.Text.Trim()) + "')"))
             {
-               // ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "click", "alert('资产类别添加成功！');", true);
+                // ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "click", "alert('资产类别添加成功！');", true);
             }
             else
             {
