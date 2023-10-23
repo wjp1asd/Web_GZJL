@@ -44,6 +44,9 @@ namespace Web_GZJL
                 case "yuhe":
                     this.yuhe(context);
                     break;
+                case "cedian":
+                    this.cedian(context);
+                    break;
             }
            
           
@@ -72,8 +75,32 @@ namespace Web_GZJL
 
             context.Response.Write(jsSerializer.Serialize(parentRow));
         }
-
         
+     private void cedian(HttpContext context)
+        {
+          //  String sql = context.Request.QueryString["rw"];
+            DataTable dt = new DataTable();
+        //    if (sql.Length>0)
+        //    { dt = DataBase.Exe_dt("select *  from TestInfmin    where RWNo = " + sql + "   ORDER BY id "); }
+        //   else  {
+       dt = DataBase.Exe_dt("select *  from TestInfmin"); 
+            context.Response.ContentType = "application/json";
+            JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
+            List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
+            Dictionary<string, object> childRow;
+            foreach (DataRow row in dt.Rows)
+            {
+                childRow = new Dictionary<string, object>();
+                foreach (DataColumn col in dt.Columns)
+                {
+                    childRow.Add(col.ColumnName, row[col]);
+                }
+                parentRow.Add(childRow);
+            }
+
+            context.Response.Write(jsSerializer.Serialize(parentRow));
+        }
+       
         //容器信息列表 +id 查询
         private void rongqiinfo(HttpContext context)
         {
