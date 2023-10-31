@@ -101,7 +101,7 @@ namespace Web_GZJL
             context.Response.Write(jsSerializer.Serialize(parentRow));
         }
        
-        //容器信息列表 +id 查询
+        //容器信息列表 +id 查询123
         private void rongqiinfo(HttpContext context)
         {
             String sql = context.Request.QueryString["cid"];
