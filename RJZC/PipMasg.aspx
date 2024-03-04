@@ -46,14 +46,7 @@
                                         <br />
                                             <asp:ScriptManager ID="ScriptManager1" runat="server" AsyncPostBackTimeout="500">
                                             </asp:ScriptManager>
-                                         <%--   <table id="Table2" cellspacing="0" cellpadding="0" border="0" width="41%">
-                                            <tr align="center" style="height: 40px">
-                                                <td>
-                                                    <h2>
-                                                       管道编号</h2>
-                                                </td>
-                                            </tr>
-                                        </table>--%>
+                                     
                                             <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                                                 <ContentTemplate>
                                                     <table cellpadding="0" cellspacing="0" class="td2" style="border-collapse: collapse">
@@ -61,18 +54,19 @@
                                                             <td>
                                                                       <table  cellpadding="0"   cellspacing="0"  border="1px solid #6C9EC1" class="td2" style=" width:100%; border:1px;border-color: #6C9EC1; border-collapse:collapse; border-spacing:4px; height:50px;  ">
                                                                     <tr height="2px"  style="text-align:center ;">
-                                                                        <td  style="width:150px;"><label  style="    font-size:9px; line-height:31px;padding-top: 12px;margin-right: 5px;" >管道编号</label></td>
-                                                                          <td  >
-                                                                            <asp:TextBox ID="txt_lbmc" runat="server" Width="180px" MaxLength="50"      margin-left=" 5px"></asp:TextBox>
+                                                                        <td  style="width:150px;"><label  style="    font-size:9px; line-height:31px;padding-top: 12px;margin-right: 5px;" >管件名称</label></td>
+                                                                           <td width="179">
+                                                                            <asp:TextBox ID="TextBox4" runat="server"  Width="180px" MaxLength="50" ></asp:TextBox>
                                                                         </td>
-                                                                           <td  style="width:150px;"><label  style="    font-size:9px; line-height:31px;padding-top: 12px;margin-right: 5px;" >管道名称</label></td>
+                                                                        <td  style="width:150px;"><label  style="    font-size:9px; line-height:31px;padding-top: 12px;" >管件编号</label></td>
+                                                                          <td  >
+                                                                            <asp:TextBox ID="txt_lbmc" runat="server" Width="180px" MaxLength="50" CssClass="txt"></asp:TextBox>
+                                                                        </td>
+                                                                         <td  style="width:150px;"><label  style="    font-size:9px; line-height:31px;padding-top: 12px;margin-right: 5px;" >管道名称</label></td>
                                                                            <td width="179">
                                                                             <asp:TextBox ID="txt_lbmcbz" runat="server"  Width="180px" MaxLength="50" ></asp:TextBox>
-                                                                        </td>
-                                                                     <td  style="width:150px;"><label  style="    font-size:9px; line-height:31px;padding-top: 12px;margin-right: 5px;" >管道规格</label></td>
-                                                                           <td width="179">
-                                                                            <asp:TextBox ID="TextBox2" runat="server"  Width="180px" MaxLength="50" ></asp:TextBox>
-                                                                        </td>
+                                                                        </td>  
+                                                                     
                                                                         </tr>
                                                                      <tr height="2px" style="text-align:center;">
                                                                         <td   style="width:150px;"><label  style="    font-size:9px; line-height:31px;padding-top: 12px;margin-right: 5px;" >管道级别</label></td>
@@ -97,19 +91,30 @@
                                                                         </td>
                                                                                      <td  style="width:150px;"><label  style="     font-size:9px; line-height:31px;padding-top: 12px;margin-right: 5px;" >布点数量</label></td>
                                                                           <td width="179" >
-
-                                                                            <asp:TextBox ID="TextBox1" runat="server" Width="180px" MaxLength="50" ></asp:TextBox>
+                                                                     <asp:DropDownList ID="bdsl" runat="server"    CssClass="a1" width=" 185px"    height=" 22px"> 
+                                                                        <asp:ListItem Text="***请选择数量***" Value=""></asp:ListItem>
+                                                                        <asp:ListItem Text="变径管（9）" Value="9"></asp:ListItem>                                                                    
+                                                                        <asp:ListItem Text="弯头（11）" Value="11"></asp:ListItem>
+                                                                                                                                       
+                                                                        <asp:ListItem Text="三通（13）" Value="13"></asp:ListItem>
+                                                                    </asp:DropDownList>
+                                                                          
                                                                         </td>
                                                                                   <td  style="width:150px;"><label  style="     font-size:9px; line-height:31px;padding-top: 12px;margin-right: 5px;" >使用单位</label></td>
                                                                           <td width="179" >
-
-                                                                            <asp:TextBox ID="TextBox4" runat="server" Width="180px" MaxLength="50" ></asp:TextBox>
+                                                                     <asp:DropDownList ID="orgname" runat="server"    CssClass="a1" width=" 185px"    height=" 22px"> 
+                                                                       
+                                                                    </asp:DropDownList>
+                                                                        
+                                                                         
                                                                         </td>
                                                                           </tr>
-                                                                      <tr> 
-                                                           <td style="border:none">
-                                                                        </td> <td style="border:none">
-                                                                        </td> <td style="border:none">
+                                                                      <tr style="text-align:center;"> 
+                                                        
+                                                                       <td  style="width:150px;"><label  style="    font-size:9px; line-height:31px;padding-top: 12px;margin-right: 5px;" >管道规格</label></td>
+                                                                           <td width="179">
+                                                                            <asp:TextBox ID="TextBox2" runat="server"  Width="180px" MaxLength="50" ></asp:TextBox>
+                                                                        </td>
                                                                         </td>  <td  align="center" width="59" style="border:none">
                                                                               <asp:LinkButton ID="LinkButton5" runat="server" ToolTip="委托信息" OnClick="btn_WT_Click">&nbsp;&nbsp;委托</asp:LinkButton>
                                                                       
@@ -132,7 +137,7 @@
                                                                 <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" BorderWidth="0px"
                                                                     CellPadding="2" OnRowCancelingEdit="GridView1_RowCancelingEdit" OnRowEditing="GridView1_RowEditing"
                                                                     OnRowUpdating="GridView1_RowUpdating" BorderStyle="None" CellSpacing="1" CssClass="quanbu"
-                                                                    OnRowDeleting="GridView1_RowDeleting">
+                                                                    OnRowDeleting="GridView1_RowDeleting" Width="1182px">
                                                                     <Columns>
                                                                              <asp:TemplateField  HeaderText="全选" >
                                                                             <HeaderTemplate><%--OnCheckedChanged="chkAll_CheckedChanged" --%>
@@ -142,15 +147,15 @@
                                                                                 <asp:CheckBox runat="server" ID="chkItem" /> 
                                                                             </ItemTemplate>
                                                                         </asp:TemplateField>
-                                                                        <asp:TemplateField HeaderText="管道编号 ">
+                                                                             <asp:TemplateField HeaderText="管件ID ">
                                                                             <EditItemTemplate>
-                                                                                <asp:TextBox ID="txt_mc" runat="server" Text='<%# Bind("NumBer") %>' Width="170px"
+                                                                                <asp:TextBox ID="txt_na1" runat="server" Text='<%# Bind("ID") %>' Width="170px"
                                                                                     MaxLength="50" Height="20px"></asp:TextBox>
                                                                             </EditItemTemplate>
                                                                             <ItemStyle HorizontalAlign="Center" Width="180px" />
                                                                             <HeaderStyle HorizontalAlign="Center" Width="180px" CssClass="dl" />
                                                                             <ItemTemplate>
-                                                                                <asp:Label ID="lbl_pn" runat="server" Text='<%# Bind("NumBer") %>'></asp:Label>
+                                                                                <asp:Label ID="lbl_nm1" runat="server" Text='<%# Bind("ID") %>'></asp:Label>
                                                                             </ItemTemplate>
                                                                         </asp:TemplateField>
                                                                               <asp:TemplateField HeaderText="管道名称 ">
@@ -162,6 +167,29 @@
                                                                             <HeaderStyle HorizontalAlign="Center" Width="180px" CssClass="dl" />
                                                                             <ItemTemplate>
                                                                                 <asp:Label ID="lbl_nm" runat="server" Text='<%# Bind("ConName") %>'></asp:Label>
+                                                                            </ItemTemplate>
+                                                                        </asp:TemplateField>
+                                                                             <asp:TemplateField HeaderText="管件名称">
+  <EditItemTemplate>
+                                                                                <asp:TextBox ID="txt_gj" runat="server" Text='<%# Bind("GuanJianNum") %>' Width="170px"
+                                                                                    MaxLength="50" Height="20px"></asp:TextBox>
+                                                                            </EditItemTemplate>
+                                                                            <ItemStyle HorizontalAlign="Center" Width="180px" />
+                                                                            <HeaderStyle HorizontalAlign="Center" Width="180px" CssClass="dl" />
+ <ItemTemplate>
+                                                                                <asp:Label ID="lbl_gj" runat="server" Text='<%# Bind("GuanJianNum") %>'></asp:Label>
+                                                                            </ItemTemplate>
+
+                                                                             </asp:TemplateField>
+                                                                        <asp:TemplateField HeaderText="管件编号 ">
+                                                                            <EditItemTemplate>
+                                                                                <asp:TextBox ID="txt_mc" runat="server" Text='<%# Bind("NumBer") %>' Width="170px"
+                                                                                    MaxLength="50" Height="20px"></asp:TextBox>
+                                                                            </EditItemTemplate>
+                                                                            <ItemStyle HorizontalAlign="Center" Width="180px" />
+                                                                            <HeaderStyle HorizontalAlign="Center" Width="180px" CssClass="dl" />
+                                                                            <ItemTemplate>
+                                                                                <asp:Label ID="lbl_pn" runat="server" Text='<%# Bind("NumBer") %>'></asp:Label>
                                                                             </ItemTemplate>
                                                                         </asp:TemplateField>
                                                                            <asp:TemplateField HeaderText="管道规格 ">
@@ -241,9 +269,7 @@
                                                                                 <asp:Label ID="lbl_ud" runat="server" Text='<%# Bind("YonghuName") %>'></asp:Label>
                                                                             </ItemTemplate>
                                                                         </asp:TemplateField>
-
-
-
+                                                                        
 
                                                                         <asp:TemplateField HeaderText="编辑" ShowHeader="False">
                                                                             <EditItemTemplate>
@@ -267,30 +293,52 @@
                                                                             <ItemStyle HorizontalAlign="Center" Width="50px" />
                                                                             <HeaderStyle HorizontalAlign="Center" Width="50px" CssClass="dl" />
                                                                         </asp:TemplateField>
+                                                                        
+                                                                        <asp:TemplateField HeaderText="二维码" ShowHeader="False">
+                                                                           
+                                                                             <ItemStyle HorizontalAlign="Center" Width="180px" />
+                                                                            <HeaderStyle HorizontalAlign="Center" Width="180px" CssClass="dl" />
+                                                                            <ItemTemplate>
+                                                                              <asp:Image ID="Image" runat="server" ImageUrl='<%# Eval("Image") %>' Width="50px" Height="50px" />
+                                                                            </ItemTemplate>
+                                                                        </asp:TemplateField>
+
+                                                                           <asp:TemplateField HeaderText="下载物料">
+                                                                            <ItemTemplate>
+                                                                                <asp:LinkButton ID="LinkButton5" runat="server" 
+                                                                                    CssClass="a2" Text="下载物料"   CommandArgument='<%# Eval("ID") + "|" + Eval("NumBer") + "|" + Eval("ConName") %>'  OnClick="LinkButton5_Click"></asp:LinkButton>
+                                                                            </ItemTemplate>
+                                                                            <ItemStyle HorizontalAlign="Center" Width="50px" />
+                                                                            <HeaderStyle HorizontalAlign="Center" Width="50px" CssClass="dl" />
+                                                                        </asp:TemplateField>
                                                                     </Columns>
                                                                     <RowStyle CssClass="dan" />
                                                                     <HeaderStyle CssClass="biaoti" />
                                                                     <AlternatingRowStyle CssClass="suang" />
                                                                     <PagerStyle CssClass="biaoti" HorizontalAlign="Left" />
                                                                 </asp:GridView>
-                                                            </td>
+                                                                
+                                                                        </td>
                                                         </tr>
                                                       
                                                     </table>
                                                 </ContentTemplate>
                                             </asp:UpdatePanel>
-                                            &nbsp;
+                                            
+                                          
                                         </td>
                                     </tr>
                                 </table>
                             </td>
-                        </tr>
+                        </tr>+
                     </table>
                 </td>
             </tr>
         </table>
     </div>
     </form>
+     
+   
 </body>
 </html>
 <script type="text/javascript">

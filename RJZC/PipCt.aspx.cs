@@ -11,6 +11,7 @@ namespace Web_GZJL.RJZC
     public partial class PipCt : System.Web.UI.Page
     {
         public string t1 = "", t0 = ""; string sql = "";
+        public string cl = "https://open-api.cli.im/cli-open-platform-service/v1/labelStyle/create?cliT=B216&cliD=%E5%9B%BE%E7%89%87%E6%A0%B7%E5%BC%8F%E4%BA%8C%E7%BB%B4%E7%A0%81&cliF1=%E5%AE%B9%E5%99%A8%E7%BC%96%E5%8F%B7%EF%BC%9A123&cliF2=%E6%B5%8B%E7%82%B9%E7%BC%96%E5%8F%B7";
         protected void Page_Load(object sender, EventArgs e)
         {
 
@@ -27,11 +28,32 @@ namespace Web_GZJL.RJZC
             t1 = DataOper.retMenuTitle(Request.Path, "1");
             if (!this.IsPostBack)
             {
+                getorg();
                 getData();
 
             }
 
         }
+
+        private void getorg()
+        {
+
+            DataTable dt = DataBase.Exe_dt("select departid,departname,id from sys_depart");
+
+            List<string> roles = new List<string>();
+            roles.Add("选择机构");
+            foreach (DataRow row in dt.Rows) // 遍历所有行
+            {
+                // 读取列的值
+                roles.Add(row["departname"].ToString());
+
+
+            }
+
+            type.DataSource = roles;
+            type.DataBind();
+        }
+
 
         /// <summary>
         /// GridView1数据绑定
@@ -66,13 +88,13 @@ namespace Web_GZJL.RJZC
             DataTable dt = new DataTable();
             if (sql != "")
             {
-                dt = DataBase.Exe_dt("select id,Sbjingdu,Sbnumber,Mac,State from ShebeiManager       where  " + ViewState["where"].ToString() + "      ORDER BY id ");
+                dt = DataBase.Exe_dt("select id,Sbjingdu,Sbnumber,Mac,modelNum,instrumentNum,lastVeri,veriExpire,State,Org from ShebeiManager       where  " + ViewState["where"].ToString() + "      ORDER BY id ");
         
             }
             else
             {
 
-                dt = DataBase.Exe_dt("select id,Sbjingdu,Sbnumber,Mac,State from ShebeiManager ORDER BY id ");
+                dt = DataBase.Exe_dt("select id,Sbjingdu,Sbnumber,Mac,modelNum,instrumentNum,lastVeri,veriExpire,State,Org from ShebeiManager ORDER BY id ");
             }
             return dt;
         }
@@ -90,7 +112,11 @@ namespace Web_GZJL.RJZC
                 ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "click", "alert('Mac地址已存在！');", true);
                 return;
             }
-            if (DataBase.Exe_cmd("insert into ShebeiManager(Sbjingdu,Sbnumber,Mac,State ) values('" + DataOper.setTrueString(txt_hjd.Text.Trim()) + "','" + DataOper.setTrueString(txt_hbh.Text.Trim()) + "','" + DataOper.setTrueString(txt_Mac.Text.Trim()) + "','" + DataOper.setTrueString(txt_st.Text.Trim()) + "')"))
+            if (DataBase.Exe_cmd("insert into ShebeiManager(Sbjingdu,Sbnumber,Mac,State,modelNum,instrumentNum,lastVeri,veriExpire,Org) values('" + DataOper.setTrueString(txt_hjd.Text.Trim()) + "','" + DataOper.setTrueString(txt_hbh.Text.Trim()) + "','" + DataOper.setTrueString(txt_Mac.Text.Trim()) + "','" + DataOper.setTrueString(txt_st.Text.Trim())
+                + "','" + DataOper.setTrueString(txt_model.Text.Trim()) + "','" + DataOper.setTrueString(txt_instr.Text.Trim()) + "','" + DataOper.setTrueString(txt_lastime.Text.Trim()) 
+                + "','" + DataOper.setTrueString(txt_end.Text.Trim())
+                + "','" + DataOper.setTrueString(type.SelectedItem.Text.Trim())
+                + "')"))
             {
                 // ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "click", "alert('添加成功！');", true);
             }
@@ -157,7 +183,10 @@ namespace Web_GZJL.RJZC
             TextBox bz = (TextBox)GridView1.Rows[e.RowIndex].Cells[1].FindControl("txt_jd");
             TextBox ac = (TextBox)GridView1.Rows[e.RowIndex].Cells[0].FindControl("txt_mc");
             TextBox zt = (TextBox)GridView1.Rows[e.RowIndex].Cells[1].FindControl("txt_zt");
-          
+            TextBox model = (TextBox)GridView1.Rows[e.RowIndex].Cells[1].FindControl("txt_modelNum");
+            TextBox instrr = (TextBox)GridView1.Rows[e.RowIndex].Cells[1].FindControl("txt_instNum");
+            TextBox last = (TextBox)GridView1.Rows[e.RowIndex].Cells[0].FindControl("txt_last");
+            TextBox end= (TextBox)GridView1.Rows[e.RowIndex].Cells[1].FindControl("txt_end");
             //if (txt_hbh.Text.Trim() == "")
             //{
             //    ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "click", "alert('请输入测厚仪编号！');", true);
@@ -174,7 +203,13 @@ namespace Web_GZJL.RJZC
                 ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "click", "alert('Mac地址已存在！');", true);
                 return;
             }
-            if (DataBase.Exe_cmd("update ShebeiManager set Sbnumber='" + DataOper.setTrueString(mc.Text.Trim()) + "',Sbjingdu='" + DataOper.setTrueString(bz.Text.Trim()) + "',Mac='" + DataOper.setTrueString(ac.Text.Trim()) + "',State='" + DataOper.setTrueString(zt.Text.Trim()) + "' where id='" + GridView1.DataKeys[e.RowIndex].Value.ToString() + "'"))
+          //  modelNum,instrumentNum,lastVeri,veriExpire
+            if (DataBase.Exe_cmd("update ShebeiManager set Sbnumber='" + DataOper.setTrueString(mc.Text.Trim())
+                + "',modelNum='" + DataOper.setTrueString(model.Text.Trim())
+                + "',instrumentNum='" + DataOper.setTrueString(instrr.Text.Trim())
+                + "',lastVeri='" + DataOper.setTrueString(last.Text.Trim())
+                + "',veriExpire='" + DataOper.setTrueString(end.Text.Trim())
+                + "',Sbjingdu='" + DataOper.setTrueString(bz.Text.Trim()) + "',Mac='" + DataOper.setTrueString(ac.Text.Trim()) + "',State='" + DataOper.setTrueString(zt.Text.Trim()) + "' where id='" + GridView1.DataKeys[e.RowIndex].Value.ToString() + "'"))
             {
                 //ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "click", "alert('编辑成功！');", true);
             }
@@ -196,6 +231,9 @@ namespace Web_GZJL.RJZC
 txt_hjd.Text = "";
 txt_Mac.Text = "";
 txt_st.Text = "";
+            txt_instr.Text = "";
+            txt_model.Text = "";
+
         }
         #region 查询
         //查询
@@ -245,7 +283,46 @@ txt_st.Text = "";
                     sql += " AND  State   LIKE  '%" + DataOper.setTrueString(txt_st.Text.Trim()) + "%'";
                 }
             }
+            if (txt_lastime.Text.Trim() != "")
+            {
 
+                if (sql == "")
+                {
+                    sql += "   lastVeri   LIKE  '%" + DataOper.setTrueString(txt_st.Text.Trim()) + "%'";
+
+                }
+                else
+                {
+                    sql += " AND  lastVeri   LIKE  '%" + DataOper.setTrueString(txt_st.Text.Trim()) + "%'";
+                }
+            }
+            if (txt_end.Text.Trim() != "")
+            {
+
+                if (sql == "")
+                {
+                    sql += "   veriExpire   LIKE  '%" + DataOper.setTrueString(txt_st.Text.Trim()) + "%'";
+
+                }
+                else
+                {
+                    sql += " AND  veriExpire   LIKE  '%" + DataOper.setTrueString(txt_st.Text.Trim()) + "%'";
+                }
+            }
+
+            if (type.Text.Trim() != "" &&type.SelectedIndex!=0)
+            {
+
+                if (sql == "")
+                {
+                    sql += "   Org  LIKE  '%" + DataOper.setTrueString(type.Text.Trim()) + "%'";
+
+                }
+                else
+                {
+                    sql += " AND  Org  LIKE  '%" + DataOper.setTrueString(type.Text.Trim()) + "%'";
+                }
+            }
             ViewState["where"] = sql;
             getData();
         }

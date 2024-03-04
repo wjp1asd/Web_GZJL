@@ -164,6 +164,12 @@ namespace Web_GZJL.RJZC
             clear();
             getData();
         }
+
+        protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
         /// 清空GridView的录入文本框
         /// </summary>
         private void clear()

@@ -11,6 +11,23 @@
 
     <script language="JavaScript" src="../js/Divs.js" type="text/javascript"></script>
 
+    <style type="text/css">
+        .auto-style1 {
+            width: 150px;
+            height: 1px;
+        }
+        .auto-style2 {
+            height: 1px;
+        }
+        .auto-style3 {
+            width: 143px;
+        }
+        .auto-style4 {
+            width: 143px;
+            height: 1px;
+        }
+    </style>
+
 </head>
 <body>
     <form id="form1"   method="post"   runat="server">
@@ -93,17 +110,19 @@
                                                                     </tr>border-collapse: collapse ; 
                                                                 </table>--%>
                                                                 <table  cellpadding="0"   cellspacing="0"  border="1px solid #6C9EC1" class="td2" style=" width:100%; border:1px;border-color: #6C9EC1; border-collapse:collapse; border-spacing:4px; height:50px;  ">
-                                                                    <tr height="2px"  style="text-align:center ;">
-                                                                        <td  style="width:150px;"><label  style="    font-size:9px; line-height:31px;padding-top: 12px;margin-right: 5px;" >单位名称</label></td>
-                                                                          <td  >
+                                                                    <tr  style="text-align:center ;">
+                                                                        <td class="auto-style1"><label  style="    font-size:9px; line-height:31px;padding-top: 12px;margin-right: 5px;" >单位名称</label></td>
+                                                                          <td class="auto-style2"  >
                                                                             <asp:TextBox ID="txt_cna" runat="server" Width="180px" MaxLength="50"      margin-left=" 5px"></asp:TextBox>
                                                                         </td>
-                                                                          <td  style="width:150px;"><label  style="    font-size:9px; line-height:31px;padding-top: 12px;margin-right: 5px;" >单位地址</label></td>
-                                                                         <td   style="border-right:none"><%--1px solid #cde1ec--%>
+                                                                          <td class="auto-style1"><label  style="    font-size:9px; line-height:31px;padding-top: 12px;margin-right: 5px;" >单位地址</label></td>
+                                                                         <td   style="border-right:none" class="auto-style2"><%--1px solid #cde1ec--%>
                                                                             <asp:TextBox ID="txt_adres" runat="server" Width="260px" MaxLength="100"></asp:TextBox>
                                                                         </td>
-                                                                          <td style=" border-right : 1px solid #cde1ec;border-left:0"  ></td>
-                <td style=" border-left:0"  ></td>
+                                                                          <td style=" font-size: 9px; line-height: 31px; padding-top: 12px; margin-right: 5px;" class="auto-style4"  >角色</td>
+                <td style=" border-left:0" class="auto-style2"  >
+                    <asp:TextBox ID="txt_role" runat="server" MaxLength="100" Width="260px"></asp:TextBox>
+                                                                        </td>
                                                                         </tr>
                                                                      <tr height="2px" style="text-align:center;">
                                                                         <td   style="width:150px;"><label  style="    font-size:9px; line-height:31px;padding-top: 12px;margin-right: 5px;" >联系人</label></td>
@@ -114,10 +133,10 @@
                                                                            <td width="179">
                                                                             <asp:TextBox ID="txt_tel" runat="server" Width="260px" MaxLength="100"></asp:TextBox>
                                                                         </td>
-                                                                          <td  style="width:150px;"><label  style="     font-size:9px; line-height:31px;padding-top: 12px;margin-right: 5px;" >单位邮件</label></td>
+                                                                          <td class="auto-style3"><label  style="     font-size:9px; line-height:31px;padding-top: 12px;margin-right: 5px;" >单位邮件</label></td>
                                                                           <td width="179" >
 
-                                                                            <asp:TextBox ID="txt_ema" runat="server" Width="178px" MaxLength="100"></asp:TextBox>
+                                                                            <asp:TextBox ID="txt_ema" runat="server" Width="260px" MaxLength="100"></asp:TextBox>
                                                                         </td>
                                                                         </tr>
                                                                       <tr> 
@@ -126,7 +145,7 @@
                                                                         </td> <td style="border:none">
                                                                         </td> <td style="border:none">
                                                                         </td>
-                                                          <td  align="center" width="59" style="border:none">
+                                                          <td  align="center" style="border:none" class="auto-style3">
                                                                             <asp:LinkButton ID="btn_add" runat="server" ToolTip="添加信息" OnClick="btn_add_Click">&nbsp;&nbsp;添加</asp:LinkButton>
                                                                         </td>
                                                           <td align="center" width="59" style="border:none">
@@ -145,7 +164,7 @@
                                                                 <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" BorderWidth="0px"
                                                                     CellPadding="2" OnRowCancelingEdit="GridView1_RowCancelingEdit" OnRowEditing="GridView1_RowEditing"
                                                                     OnRowUpdating="GridView1_RowUpdating" BorderStyle="None" CellSpacing="1" CssClass="quanbu"
-                                                                    OnRowDeleting="GridView1_RowDeleting">
+                                                                    OnRowDeleting="GridView1_RowDeleting" OnSelectedIndexChanged="GridView1_SelectedIndexChanged">
                                                                     <Columns>
                                                                         <asp:TemplateField HeaderText="单位名称 ">
                                                                             <EditItemTemplate>
@@ -180,6 +199,19 @@
                                                                                 <asp:Label ID="Label3" runat="server" Text='<%# Bind("Orguser") %>'></asp:Label>
                                                                             </ItemTemplate>
                                                                         </asp:TemplateField>
+                                                                                <asp:TemplateField HeaderText="角色">
+      <EditItemTemplate>
+                                                                                <asp:TextBox ID="txt_role" runat="server" Text='<%# Bind("Role") %>' Width="170px" MaxLength="100"
+                                                                                    Height="20px"></asp:TextBox>
+                                                                            </EditItemTemplate>
+                                                                            <ItemStyle HorizontalAlign="Left" Width="180px" />
+ <ItemTemplate>
+                                                                                <asp:Label ID="Label11" runat="server" Text='<%# Bind("Role") %>'></asp:Label>
+                                                                            </ItemTemplate>
+
+                                                                            <HeaderStyle HorizontalAlign="Center" Width="180px" CssClass="dl" />
+
+                                                                                </asp:TemplateField>
                                                                                 <asp:TemplateField HeaderText="联系电话">
                                                                             <EditItemTemplate>
                                                                                 <asp:TextBox ID="txt_pho" runat="server" Text='<%# Bind("Orgtel") %>' Width="170px" MaxLength="100"

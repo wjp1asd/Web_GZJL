@@ -12,7 +12,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Web_GZJL</RootNamespace>
     <AssemblyName>Web_GZJL</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <SccProjectName>
     </SccProjectName>
     <SccLocalPath>
@@ -72,6 +72,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\bin\HFSoft.Web.dll</HintPath>
     </Reference>
+    <Reference Include="MathNet.Numerics, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\MathNet.Numerics.5.0.0\lib\net461\MathNet.Numerics.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.Office.Interop.Excel.15.0.4795.1001\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -93,13 +96,30 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\bin\NumericC.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="QRCoder, Version=1.4.3.0, Culture=neutral, PublicKeyToken=c4ed5b9ae8358a28, processorArchitecture=MSIL">
+      <HintPath>packages\QRCoder.1.4.3\lib\net40\QRCoder.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Numerics" />
-    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime, Version=4.1.1.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Runtime.4.3.1\lib\net462\System.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Extensions, Version=4.1.1.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Runtime.Extensions.4.3.1\lib\net462\System.Runtime.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.ValueTuple.4.4.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.DynamicData" />
@@ -112,6 +132,13 @@
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Mobile" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="zxing, Version=0.16.9.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>packages\ZXing.Net.0.16.9\lib\net461\zxing.dll</HintPath>
+    </Reference>
+    <Reference Include="zxing.presentation, Version=0.16.9.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>packages\ZXing.Net.0.16.9\lib\net461\zxing.presentation.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\ckeditor\adapters\jquery.js" />
@@ -912,6 +939,7 @@
     <Content Include="My97DatePicker\开发包\skin\whyGreen\img.gif" />
     <Content Include="RJZC\ConMasg.aspx" />
     <Content Include="RJZC\ctest.aspx" />
+    <Content Include="RJZC\detail.aspx" />
     <Content Include="RJZC\Etcp.aspx" />
     <Content Include="RJZC\Jour.aspx" />
     <Content Include="RJZC\JSZCDJ.aspx" />
@@ -944,7 +972,6 @@
     <Content Include="SPGL\SPHYCX.aspx" />
     <Content Include="SPGL\SPHYSH.aspx" />
     <Content Include="top.html" />
-    <Content Include="WebForm1.aspx" />
     <Content Include="ZCGL\FKCGSZ.aspx" />
     <Content Include="ZCGL\ZCCX.aspx" />
     <Content Include="ZCGL\ZCLBTJ.aspx" />
@@ -1159,7 +1186,9 @@
     <Compile Include="Main2.aspx.designer.cs">
       <DependentUpon>Main2.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Model\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Qrcode.cs" />
     <Compile Include="RJZC\ConMasg.aspx.cs">
       <DependentUpon>ConMasg.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1173,6 +1202,13 @@
     </Compile>
     <Compile Include="RJZC\ctest.aspx.designer.cs">
       <DependentUpon>ctest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="RJZC\detail.aspx.cs">
+      <DependentUpon>detail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="RJZC\detail.aspx.designer.cs">
+      <DependentUpon>detail.aspx</DependentUpon>
     </Compile>
     <Compile Include="RJZC\Etcp.aspx.cs">
       <DependentUpon>Etcp.aspx</DependentUpon>
@@ -1390,13 +1426,6 @@
     </Compile>
     <Compile Include="SPGL\SPHYSH.aspx.designer.cs">
       <DependentUpon>SPHYSH.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="WebForm1.aspx.cs">
-      <DependentUpon>WebForm1.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="WebForm1.aspx.designer.cs">
-      <DependentUpon>WebForm1.aspx</DependentUpon>
     </Compile>
     <Compile Include="ZCGL\FKCGSZ.aspx.cs">
       <DependentUpon>FKCGSZ.aspx</DependentUpon>

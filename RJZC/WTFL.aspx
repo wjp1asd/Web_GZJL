@@ -95,7 +95,7 @@
                                                                 <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" BorderWidth="0px"
                                                                     CellPadding="2" OnRowCancelingEdit="GridView1_RowCancelingEdit" OnRowEditing="GridView1_RowEditing"
                                                                     OnRowUpdating="GridView1_RowUpdating" BorderStyle="None" CellSpacing="1" CssClass="quanbu"
-                                                                    OnRowDeleting="GridView1_RowDeleting">
+                                                                    OnRowDeleting="GridView1_RowDeleting" OnSelectedIndexChanged="GridView1_SelectedIndexChanged">
                                                                     <Columns>
                                                                         <asp:TemplateField HeaderText="耦合剂名称 ">
                                                                             <EditItemTemplate>

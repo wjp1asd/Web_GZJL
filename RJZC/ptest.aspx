@@ -57,8 +57,9 @@
                                                                     <tr height="2px"  style="text-align:center ;">
                                                                         <td  style="width:150px;"><label  style="    font-size:9px; line-height:31px;padding-top: 12px;margin-right: 5px;" >任务单号</label></td>
                                                                           <td   style="border-right:none">
-                                                                            <asp:TextBox ID="txt_copi" runat="server" Width="180px" MaxLength="50"      margin-left=" 5px"></asp:TextBox>
-                                                                        </td>
+                                                                         <asp:DropDownList ID="orgname" runat="server"    CssClass="a1" width=" 185px"    height=" 22px"> 
+                                                                       
+                                                                    </asp:DropDownList>    </td>
                                                                            <td style="border:none"></td>
                                                                          <td style="border:none"></td>
                                                                          <td style="border:none"></td> 
@@ -88,13 +89,26 @@
                                                                        <asp:GridView ID="GridView1" runat="server" CausesValidation="false" AutoGenerateColumns="False" BorderWidth="0px"
                                                                     CellPadding="2" OnRowCancelingEdit="GridView1_RowCancelingEdit"  
                                                                     BorderStyle="None" CellSpacing="1" CssClass="quanbu"
-                                                                   KeyFieldName="Id" AllowSorting="true" PageSize="20" GridLines="None" DataKeyNames="id">
+                                                                   KeyFieldName="Id" AllowSorting="true" PageSize="20" GridLines="None" DataKeyNames="id" OnSelectedIndexChanged="GridView1_SelectedIndexChanged" OnRowDeleting="GridView1_RowDeleting">
                                                                     <Columns>
                                                                      
                                                                        
          
                                                                       <asp:BoundField DataField="Id" HeaderText="id" Visible="false"  ItemStyle-CssClass ="hidden" HeaderStyle-CssClass="hidden" />
-                                                                                       <asp:TemplateField HeaderText="任务单号 ">
+                                                                              <asp:TemplateField HeaderText="ID ">
+                                                                            <EditItemTemplate>
+                                                                                <asp:TextBox ID="txt_id" runat="server" Text='<%# Bind("id") %>' Width="170px"
+                                                                                    MaxLength="50" Height="20px"></asp:TextBox>
+                                                                            </EditItemTemplate>
+                                                                            <ItemStyle HorizontalAlign="Center" Width="180px" />
+                                                                            <HeaderStyle HorizontalAlign="Center" Width="180px" CssClass="dl" />
+                                                                            <ItemTemplate>
+                                                                                <asp:Label ID="lbl_id" runat="server" Text='<%# Bind("id") %>'></asp:Label>
+                                                                            </ItemTemplate>
+                                                                        </asp:TemplateField>     
+                                                                        
+                                                                        
+                                                                        <asp:TemplateField HeaderText="任务单号 ">
                                                                             <EditItemTemplate>
                                                                                 <asp:TextBox ID="txt_uscn" runat="server" Text='<%# Bind("RWNo") %>' Width="170px"
                                                                                     MaxLength="50" Height="20px"></asp:TextBox>
@@ -144,16 +158,42 @@
 
                                                                             <asp:TemplateField HeaderText="表面状况 ">
                                                                             <EditItemTemplate>
-                                                                                <asp:TextBox ID="txt_uscn" runat="server" Text='<%# Bind("Surface") %>' Width="170px"
+                                                                                <asp:TextBox ID="txt_uscn1" runat="server" Text='<%# Bind("Surface") %>' Width="170px"
                                                                                     MaxLength="50" Height="20px"></asp:TextBox>
                                                                             </EditItemTemplate>
                                                                             <ItemStyle HorizontalAlign="Center" Width="180px" />
                                                                             <HeaderStyle HorizontalAlign="Center" Width="180px" CssClass="dl" />
                                                                             <ItemTemplate>
-                                                                                <asp:Label ID="lbl_uc" runat="server" Text='<%# Bind("Surface") %>'></asp:Label>
+                                                                                <asp:Label ID="lbl_uc1" runat="server" Text='<%# Bind("Surface") %>'></asp:Label>
+                                                                            </ItemTemplate>
+                                                                        </asp:TemplateField>
+                                                                         <asp:TemplateField HeaderText="检验人">
+                                                                            <EditItemTemplate>
+                                                                                <asp:TextBox ID="txt_fh1" runat="server" Text='<%# Bind("jianyanren") %>' Width="170px"
+                                                                                    MaxLength="50" Height="20px"></asp:TextBox>
+                                                                            </EditItemTemplate>
+                                                                            <ItemStyle HorizontalAlign="Center" Width="180px" />
+                                                                            <HeaderStyle HorizontalAlign="Center" Width="180px" CssClass="dl" />
+                                                                            <ItemTemplate>
+                                                                                <asp:Label ID="lbl_fh1" runat="server" Text='<%# Bind("jianyanren") %>'></asp:Label>
                                                                             </ItemTemplate>
                                                                         </asp:TemplateField>
 
+                                                                          <asp:TemplateField HeaderText="删除">
+                                                                            <ItemTemplate>
+                                                                                <asp:LinkButton ID="LinkButton4" runat="server" CausesValidation="False" CommandName="Delete"
+                                                                                    CssClass="a2" Text="删除" OnClientClick=" return confirm('确认删除此任务吗')"></asp:LinkButton>
+                                                                            </ItemTemplate>
+                                                                            <ItemStyle HorizontalAlign="Center" Width="50px" />
+                                                                            <HeaderStyle HorizontalAlign="Center" Width="50px" CssClass="dl" />
+                                                                        </asp:TemplateField>
+
+    <asp:CommandField SelectText="检测详情" ShowCancelButton="False" ShowSelectButton="True" HeaderText="操作">
+                                                                    <HeaderStyle BorderColor="White" BorderStyle="Solid" BorderWidth="1px" HorizontalAlign="Center"
+                                                                        Width="100px" />
+                                                                    <ItemStyle BorderColor="White" BorderStyle="Solid" BorderWidth="1px" HorizontalAlign="Center"
+                                                                        Width="100px" />
+                                                                </asp:CommandField> 
                                                                                                                                          
 
                                                                     </Columns>

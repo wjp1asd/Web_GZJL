@@ -93,9 +93,10 @@
                                                                         </td>
                                                                                   <td  style="width:150px;"><label  style="     font-size:9px; line-height:31px;padding-top: 12px;margin-right: 5px;" >使用单位</label></td>
                                                                           <td width="179" >
-
-                                                                            <asp:TextBox ID="TextBox4" runat="server" Width="180px" MaxLength="50" ></asp:TextBox>
-                                                                        </td>
+ <asp:DropDownList ID="orgname1" runat="server"    CssClass="a1" width=" 185px"    height=" 22px"> 
+                                                                       
+                                                                    </asp:DropDownList>
+                                                                            </td>
                                                                           </tr>
                                                                       <tr> 
                                                            <td style="border:none"></td>
@@ -234,6 +235,24 @@
                                                                             <ItemStyle HorizontalAlign="Center" Width="50px" />
                                                                             <HeaderStyle HorizontalAlign="Center" Width="50px" CssClass="dl" />
                                                                         </asp:TemplateField>
+                                                                           <asp:TemplateField HeaderText="二维码" ShowHeader="False">
+                                                                           
+                                                                             <ItemStyle HorizontalAlign="Center" Width="180px" />
+                                                                            <HeaderStyle HorizontalAlign="Center" Width="180px" CssClass="dl" />
+                                                                            <ItemTemplate>
+                                                                              <asp:Image ID="Image" runat="server" ImageUrl='<%# Eval("Image") %>' Width="50px" Height="50px" />
+                                                                            </ItemTemplate>
+                                                                        </asp:TemplateField>
+
+                                                                           <asp:TemplateField HeaderText="下载物料">
+                                                                            <ItemTemplate>
+                                                                                <asp:LinkButton ID="LinkButton5" runat="server" 
+                                                                                    CssClass="a2" Text="下载物料"   CommandArgument='<%# Eval("ID") + "|" + Eval("NumBer") + "|" + Eval("ConName") %>'  OnClick="LinkButton5_Click"></asp:LinkButton>
+                                                                            </ItemTemplate>
+                                                                            <ItemStyle HorizontalAlign="Center" Width="50px" />
+                                                                            <HeaderStyle HorizontalAlign="Center" Width="50px" CssClass="dl" />
+                                                                        </asp:TemplateField>
+
                                                                     </Columns>
                                                                     <RowStyle CssClass="dan" />
                                                                     <HeaderStyle CssClass="biaoti" />

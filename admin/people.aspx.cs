@@ -28,11 +28,30 @@ namespace Web_GZJL.admin
             if (!this.IsPostBack)
             {
                 DataBase.Exe_filllist(DropDownList1, "select XZQH,DEPARTNAME from SYS_DEPART", "XZQH", "DEPARTNAME");
-
+                getrole();
                 getData();
 
             }
 
+        }
+
+        private void getrole()
+        {
+          
+                DataTable dt = DataBase.Exe_dt("select rolename from sys_role");
+
+         List<string> roles = new List<string>();
+            roles.Add("选择角色");
+            foreach (DataRow row in dt.Rows) // 遍历所有行
+            {
+                // 读取列的值
+                roles.Add(row["rolename"].ToString());
+                    
+                    
+            }
+
+               DropDownList2.DataSource = roles;
+                DropDownList2.DataBind();
         }
 
         /// <summary>
@@ -68,22 +87,32 @@ namespace Web_GZJL.admin
             DataTable dt = new DataTable();
             if (sql != "")
             {
-                dt = DataBase.Exe_dt("select  id,  usrname,  JCName,usrzhiwu,shouji,bangongdh,Pemail  from tb_czjuser       where  " + ViewState["where"].ToString() + "      ORDER BY id ");
+                dt = DataBase.Exe_dt("select  id,  usrname,  JCName,usrzhiwu,shouji,bangongdh,Pemail,PeoRole,pass  from tb_czjuser       where  " + ViewState["where"].ToString() + "      ORDER BY id ");
 
             }
             else
             {
 
-                dt = DataBase.Exe_dt("select   id, usrname,   JCName,usrzhiwu,shouji,bangongdh,Pemail  from tb_czjuser ORDER BY id ");
+                dt = DataBase.Exe_dt("select   id, usrname,   JCName,usrzhiwu,shouji,bangongdh,Pemail,PeoRole,pass from tb_czjuser ORDER BY id ");
             }
             return dt;
         }
 
         protected void btn_add_Click(object sender, EventArgs e)
         {
-            if (DropDownList1.SelectedItem.Text == "")
+            if (DropDownList1.SelectedItem.Text == ""|| DropDownList1.SelectedIndex==0)
             {
                 ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "click", "alert('选择机构！');", true);
+                return;
+            }
+            if (ddl_zhiwu.SelectedItem.Text == "" || ddl_zhiwu.SelectedIndex == 0)
+            {
+                ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "click", "alert('选择职务！');", true);
+                return;
+            }
+            if (DropDownList2.SelectedItem.Text == "" || DropDownList2.SelectedIndex == 0)
+            {
+                ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "click", "alert('选择角色！');", true);
                 return;
             }
             if (DataBase.Exe_count("tb_czjuser", " shouji='" + DataOper.setTrueString(txt_Tel.Text.Trim()) + "' ") > 0)
@@ -92,9 +121,20 @@ namespace Web_GZJL.admin
                 return;
             }
 
-            if (DataBase.Exe_cmd("insert into tb_czjuser( ID,JCName,usrzhiwu,usrname,shouji,bangongdh,Pemail  ) values('" + DataOper.getlsh("TB_CZJUSER", "ID") + "','" + DataOper.setTrueString(DropDownList1.SelectedItem.Text) + "','" + DataOper.setTrueString(ddl_zhiwu.SelectedItem.Text) + "','" + DataOper.setTrueString(txt_pname.Text.Trim()) + "','" + DataOper.setTrueString(txt_Tel.Text.Trim()) + "','" + DataOper.setTrueString(txt_phone.Text.Trim()) + "','" + DataOper.setTrueString(txt_email.Text.Trim()) + "')"))
+            if (DataBase.Exe_cmd("insert into tb_czjuser( ID,JCName,usrzhiwu,usrname,shouji,bangongdh,Pemail,PeoRole,pass) values('" 
+                + DataOper.getlsh("TB_CZJUSER", "ID") 
+                + "','" + DataOper.setTrueString(DropDownList1.SelectedItem.Text) 
+                + "','" + DataOper.setTrueString(ddl_zhiwu.SelectedItem.Text) 
+                + "','" + DataOper.setTrueString(txt_pname.Text.Trim()) 
+                + "','" + DataOper.setTrueString(txt_Tel.Text.Trim()) 
+                + "','" + DataOper.setTrueString(txt_phone.Text.Trim()) 
+                + "','" + DataOper.setTrueString(txt_email.Text.Trim()) 
+                + "','" + DataOper.setTrueString(DropDownList2.SelectedItem.Text)
+                   + "','" + DataOper.setTrueString("123")
+                + "')"))
             {
-                // ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "click", "alert('添加成功！');", true);
+                ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "click", "alert('添加成功！');", true);
+                getData();
             }
             else
             {
@@ -159,26 +199,17 @@ namespace Web_GZJL.admin
             TextBox  dh= (TextBox)GridView1.Rows[e.RowIndex].Cells[1].FindControl("txt_dh");
             TextBox  eml= (TextBox)GridView1.Rows[e.RowIndex].Cells[0].FindControl("txt_Eml");
             TextBox  xm= (TextBox)GridView1.Rows[e.RowIndex].Cells[1].FindControl("txt_xm");
-
-            //if (txt_hbh.Text.Trim() == "")
-            //{
-            //    ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "click", "alert('请输入测厚仪编号！');", true);
-            //    return;
-            //}
-
-            //if (DataBase.Exe_count("tb_czjuser", " shouji='" + DataOper.setTrueString(txt_Tel.Text.Trim()) + "' ") > 0)
-            //{
-            //    ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "click", "alert('此手机号码已存在！');", true);
-            //    return;
-            //}
-            //if (DataBase.Exe_count("tb_czjuser", " Mac='" + DataOper.setTrueString(txt_Mac.Text.Trim()) + "' ") > 0)
-            //{
-            //    ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "click", "alert('Mac地址已存在！');", true);
-            //    return;
-            //}
-            if (DataBase.Exe_cmd("update tb_czjuser set usrname='" + DataOper.setTrueString(xm.Text.Trim()) + "',shouji='" + DataOper.setTrueString(sj.Text.Trim()) + "',bangongdh='" + DataOper.setTrueString(dh.Text.Trim()) + "',Pemail='" + DataOper.setTrueString(eml.Text.Trim()) + "' where id='" + GridView1.DataKeys[e.RowIndex].Value.ToString() + "'"))
+            TextBox  rl = (TextBox)GridView1.Rows[e.RowIndex].Cells[1].FindControl("txt_role");
+            TextBox pass = (TextBox)GridView1.Rows[e.RowIndex].Cells[1].FindControl("txt_pass");
+            if (DataBase.Exe_cmd("update tb_czjuser set usrname='" + DataOper.setTrueString(xm.Text.Trim())
+                + "',shouji='" + DataOper.setTrueString(sj.Text.Trim()) 
+                + "',bangongdh='" + DataOper.setTrueString(dh.Text.Trim())
+                + "',Pemail='" + DataOper.setTrueString(eml.Text.Trim())
+                + "',PeoRole='" + DataOper.setTrueString(rl.Text.Trim())
+                + "',pass='" + DataOper.setTrueString(pass.Text.Trim())
+                + "' where id='" + GridView1.DataKeys[e.RowIndex].Value.ToString() + "'"))
             {
-                //ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "click", "alert('编辑成功！');", true);
+               ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "click", "alert('编辑成功！');", true);
             }
             else
             {
@@ -198,6 +229,16 @@ namespace Web_GZJL.admin
             txt_phone.Text = "";
             txt_email.Text = "";
         }
+
+        protected void ddl_zhiwu_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
         #region 查询
         //查询
         protected void btn_find_Click(object sender, EventArgs e)
@@ -210,7 +251,7 @@ namespace Web_GZJL.admin
             }
 
 
-            if (DropDownList1.SelectedItem.Text != "")
+            if (DropDownList1.SelectedItem.Text != ""&&DropDownList1.SelectedIndex!=0)
             {
                 if (sql == "")
                 {
@@ -222,7 +263,7 @@ namespace Web_GZJL.admin
                     sql += " AND  JCName  LIKE  '%" + DataOper.setTrueString(DropDownList1.SelectedItem.Text) + "%'";
                 }
             }
-            if (ddl_zhiwu.SelectedItem.Text != "")
+            if (ddl_zhiwu.SelectedItem.Text != ""&& ddl_zhiwu.SelectedIndex!= 0)
             {
                 if (sql == "")
                 {
@@ -235,7 +276,18 @@ namespace Web_GZJL.admin
                 }
             }
 
+            if (DropDownList2.SelectedItem.Text != ""&&DropDownList2.SelectedIndex != 0)
+            {
+                if (sql == "")
+                {
+                    sql += "  PeoRole  LIKE  '%" + DataOper.setTrueString(ddl_zhiwu.SelectedItem.Text) + "%'";
 
+                }
+                else
+                {
+                    sql += " AND  PeoRole  LIKE  '%" + DataOper.setTrueString(ddl_zhiwu.SelectedItem.Text) + "%'";
+                }
+            }
 
 
 

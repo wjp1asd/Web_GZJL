@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Linq;
-using System.Text;
 using System.Data;
+using System.Web.UI;
 
 namespace Web_GZJL.RJZC
 {
@@ -26,11 +22,28 @@ namespace Web_GZJL.RJZC
             if (!this.IsPostBack)
             {
                 getData();
-
+                getCom();
             }
 
         }
+        private void getCom()
+        {
 
+            DataTable dt = DataBase.Exe_dt("select RWNo from   TestInfmin  where state='管道'");
+
+            List<string> roles = new List<string>();
+            roles.Add("选择任务编号");
+            foreach (DataRow row in dt.Rows) // 遍历所有行
+            {
+                // 读取列的值
+                roles.Add(row["RWNo"].ToString());
+
+
+            }
+
+            orgname.DataSource = roles;
+            orgname.DataBind();
+        }
         /// <summary>
         /// GridView1数据绑定
         /// </summary>
@@ -57,7 +70,24 @@ namespace Web_GZJL.RJZC
 
             }
         }
-
+        protected void GridView1_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        {
+            if (DataBase.Exe_cmd("DELETE FROM  TestInfmin WHERE  id ='" + GridView1.DataKeys[e.RowIndex].Value.ToString() + "'"))
+            {
+                //如果单位信息表中是0行的话，删除流水号表对应的信息
+                if (DataBase.Exe_count("TestInfmin") == 0)
+                {
+                    DataBase.Exe_cmd("DELETE  FROM  SYS_LSHGLB  WHERE  BM = 'TestInfmin '");
+                }
+                ScriptManager.RegisterStartupScript(Page, GetType(), "click", "alert('删除成功！')", true);
+                getData();
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(Page, GetType(), "click", "alert('删除失败！')", true);
+                return;
+            }
+        }
         //把查询到的数据放到datatable里
         private DataTable GetDataToTable()
         {
@@ -65,11 +95,11 @@ namespace Web_GZJL.RJZC
 
             if (sql != "")
             {
-                dt = DataBase.Exe_dt("select   id,    RWNo,FNo,Oname,ChNo,Surface  from   TestInfmin  where state='管道'   " + ViewState["where"].ToString() + "   ");
+                dt = DataBase.Exe_dt("select   id,RWNo,FNo,Oname,ChNo,Surface,jianyanren from   TestInfmin  where state='管道'   " + ViewState["where"].ToString() + "   ");
             }
             else
             {
-                dt = DataBase.Exe_dt("select   id,    RWNo,FNo,Oname,ChNo,Surface  from   TestInfmin  where state='管道'   ");
+                dt = DataBase.Exe_dt("select   id,RWNo,FNo,Oname,ChNo,Surface,jianyanren  from   TestInfmin  where state='管道'   ");
             }
                
            
@@ -96,18 +126,31 @@ namespace Web_GZJL.RJZC
         /// </summary>
         private void clear()
         {
-            txt_copi.Text = "";
+            orgname.Text = "";
 
+        }
+        public void alert(string msg)
+        {
+            Response.Write("<script language=javascript>alert('" + msg + "');</" + "script>");
+        }
+        protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            int index = GridView1.SelectedIndex;
+            string ID = GridView1.SelectedDataKey.Values["id"].ToString();
+           string url = "../RJZC/detail.aspx?id=" + ID;
+            Response.Redirect(url);
+            
         }
 
         #region 查询
         //查询
         protected void btn_find_Click(object sender, EventArgs e)
         {
-            if (txt_copi.Text.Trim() != "" && txt_copi.Text.Trim() != "")
+            if (orgname.Text.Trim() != "" && orgname.SelectedIndex!=0)
             {
 
-                sql += "  and    RWNo   like  '%" + txt_copi.Text.Trim() + "%' ";
+                sql += "  and    RWNo   like  '%" + orgname.Text.Trim() + "%' ";
             }
 
             ViewState["where"] = sql;

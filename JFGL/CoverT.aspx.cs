@@ -60,13 +60,13 @@ namespace Web_GZJL.JFGL
             DataTable dt = new DataTable();
             if (sql != "")
             {
-                dt = DataBase.Exe_dt("select  ID,Orgname,Orgadd,Orguser,Orgtel,Emaill  from  CoverTest         where  " + ViewState["where"].ToString() + "           order  by  ID   ");
+                dt = DataBase.Exe_dt("select  *  from  CoverTest         where  " + ViewState["where"].ToString() + "           order  by  ID   ");
          
            
             }
             else
             {
-                dt = DataBase.Exe_dt("select  ID,Orgname,Orgadd,Orguser,Orgtel,Emaill  from  CoverTest  order  by  ID   ");
+                dt = DataBase.Exe_dt("select  *  from  CoverTest  order  by  ID   ");
             }
             return dt;     
         }
@@ -85,7 +85,7 @@ namespace Web_GZJL.JFGL
                 return;
             }//id,wtflname,beizhu   ,'" + DataOper.setTrueString(txt_adres.Text.Trim()) + "','" + DataOper.setTrueString(txt_man.Text.Trim()) + "','" + DataOper.setTrueString(txt_tel.Text.Trim()) + "','" + DataOper.setTrueString(txt_ema.Text.Trim()) + "')
             //ID,'" + DataOper.getlsh("CoverTest", "ID") + "',
-            if (DataBase.Exe_cmd("insert into CoverTest(Orgname,Orgadd,Orguser,Orgtel,Emaill) values('" + DataOper.setTrueString(txt_cna.Text.Trim()) + "' ,'" + DataOper.setTrueString(txt_adres.Text.Trim()) + "','" + DataOper.setTrueString(txt_man.Text.Trim()) + "','" + DataOper.setTrueString(txt_tel.Text.Trim()) + "','" + DataOper.setTrueString(txt_ema.Text.Trim()) + "')"))
+            if (DataBase.Exe_cmd("insert into CoverTest(Orgname,Orgadd,Orguser,Orgtel,Emaill,Role) values('" + DataOper.setTrueString(txt_cna.Text.Trim()) + "' ,'" + DataOper.setTrueString(txt_adres.Text.Trim()) + "','" + DataOper.setTrueString(txt_man.Text.Trim()) + "','" + DataOper.setTrueString(txt_tel.Text.Trim()) + "','" + DataOper.setTrueString(txt_ema.Text.Trim()) + "','" + DataOper.setTrueString(txt_role.Text.Trim()) + "')"))
             {
               //   ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "click", "alert('单位名称添加成功！');", true);
             }
@@ -158,7 +158,19 @@ namespace Web_GZJL.JFGL
                     sql += " AND  Emaill   LIKE  '%" + DataOper.setTrueString(txt_ema.Text.Trim()) + "%'";
                 }
             }
+            if (txt_role.Text.Trim() != "")
+            {
 
+                if (sql == "")
+                {
+                    sql += "   Role  LIKE  '%" + DataOper.setTrueString(txt_role.Text.Trim()) + "%'";
+
+                }
+                else
+                {
+                    sql += " AND  Role   LIKE  '%" + DataOper.setTrueString(txt_role.Text.Trim()) + "%'";
+                }
+            }
             ViewState["where"] = sql;
             getData();
 
@@ -223,14 +235,14 @@ namespace Web_GZJL.JFGL
             TextBox peo = (TextBox)GridView1.Rows[e.RowIndex].Cells[0].FindControl("txt_peo");//联系人
             TextBox pho = (TextBox)GridView1.Rows[e.RowIndex].Cells[1].FindControl("txt_pho");//联系电话   
             TextBox ill = (TextBox)GridView1.Rows[e.RowIndex].Cells[0].FindControl("txt_ill");//邮件
-
+            TextBox role = (TextBox)GridView1.Rows[e.RowIndex].Cells[0].FindControl("txt_role");//邮件
             if (mc.Text.Trim() == "")
             {
                 ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "click", "alert('请输入单位名称名称！');", true);
                 return;
             }
 
-            if (DataBase.Exe_cmd("update CoverTest set Orgname='" + DataOper.setTrueString(mc.Text.Trim()) + "',Orgadd='" + DataOper.setTrueString(bz.Text.Trim()) + "' ,Orguser='" + DataOper.setTrueString(peo.Text.Trim()) + "' ,Orgtel='" + DataOper.setTrueString(pho.Text.Trim()) + "' ,Emaill='" + DataOper.setTrueString(ill.Text.Trim()) + "' where id='" + GridView1.DataKeys[e.RowIndex].Value.ToString() + "'"))
+            if (DataBase.Exe_cmd("update CoverTest set Orgname='" + DataOper.setTrueString(mc.Text.Trim()) + "',Role='" + DataOper.setTrueString(role.Text.Trim()) + "',Orgadd='" + DataOper.setTrueString(bz.Text.Trim()) + "' ,Orguser='" + DataOper.setTrueString(peo.Text.Trim()) + "' ,Orgtel='" + DataOper.setTrueString(pho.Text.Trim()) + "' ,Emaill='" + DataOper.setTrueString(ill.Text.Trim()) + "' where id='" + GridView1.DataKeys[e.RowIndex].Value.ToString() + "'"))
             {
                 //ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "click", "alert('用户名称编辑成功！');", true);
             }
@@ -243,6 +255,12 @@ namespace Web_GZJL.JFGL
             clear();
             getData();
         }
+
+        protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
         /// 清空GridView的录入文本框
         /// </summary>
         private void clear()
@@ -252,6 +270,7 @@ namespace Web_GZJL.JFGL
             txt_man.Text = "";
             txt_tel.Text = "";
             txt_ema.Text = "";
+            txt_role.Text = "";
         }
 
     }

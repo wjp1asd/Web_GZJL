@@ -33,11 +33,59 @@ namespace Web_GZJL.RJZC
             if (!this.IsPostBack)
             {
                 getData();
-
+                getCom();
             }
 
         }
+        private void getCom()
+        {
 
+            DataTable dt = DataBase.Exe_dt("select OrgName from CoverTest");
+
+            List<string> roles = new List<string>();
+            roles.Add("选择公司");
+            foreach (DataRow row in dt.Rows) // 遍历所有行
+            {
+                // 读取列的值
+                roles.Add(row["OrgName"].ToString());
+
+
+            }
+
+            orgname1.DataSource = roles;
+            orgname1.DataBind();
+        }
+        protected void LinkButton5_Click(object sender, EventArgs e)
+        {
+
+
+
+            string values = ((LinkButton)sender).CommandArgument;
+            string[] valueParts = values.Split('|');
+            string value1 = valueParts[0];
+            string value2 = valueParts[1];
+            string value3 = valueParts[2];
+            string a1 = "RQ-" + value1;
+            string a2 = "容器编号：" + value3;
+            string a3 = "测点编号：" + value2;
+            string cl = "https://open-api.cli.im/cli-open-platform-service/v1/labelStyle/create?cliT=B216&cliD=" +
+                a1 +
+                "&cliF1=" + a2 +
+                "&cliF2=" + a3;
+
+            var response = base.Response;
+            response.Redirect(cl, false);
+
+            // 文件路径  
+            //string filePath = "path/to/your/file.ext";
+
+            //// 设置响应头信息，告诉浏览器这是一个下载操作  
+            //Response.Clear();
+            //Response.ContentType = "application/octet-stream";
+            //Response.AppendHeader("Content-Disposition", "attachment; filename=file.ext");
+            //Response.WriteFile(filePath); // 将文件内容输出到浏览器  
+            //Response.End(); // 结束响应  
+        }
         /// <summary>
         /// GridView1数据绑定
         /// </summary>
@@ -70,17 +118,43 @@ namespace Web_GZJL.RJZC
         {
             DataTable dt = new DataTable();
             if (sql != "")
-            { dt = DataBase.Exe_dt("select id,NumBer,ConName,JiantiHoudu,FengtouHoudu,BudianNum,YonghuName  from ConManager    where  " + ViewState["where"].ToString() + "   ORDER BY id "); }
+            { dt = DataBase.Exe_dt("select * from ConManager    where  " + ViewState["where"].ToString() + "   ORDER BY id "); }
             else
             {
-                dt = DataBase.Exe_dt("select id,NumBer,ConName,JiantiHoudu,FengtouHoudu,BudianNum ,YonghuName from ConManager      ORDER BY id ");
+                dt = DataBase.Exe_dt("select * from ConManager      ORDER BY id ");
             }
             return dt;
         }
 
         protected void btn_add_Click(object sender, EventArgs e)
         {
+            if (orgname1.SelectedIndex == 0)
+            {
+                ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "click", "alert('请输入公司！');", true);
+                return;
+            }
 
+            if (txt_lbmc.Text.Trim() == "")
+            {
+                ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "click", "alert('请输入布点数量！');", true);
+                return;
+            }
+            if (txt_lbmcbz.Text.Trim() == "")
+            {
+                ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "click", "alert('请输入管件名称！');", true);
+                return;
+            }
+           
+            if (TextBox3.Text.Trim() == "")
+            {
+                ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "click", "alert('请输入容器厚度！');", true);
+                return;
+            }
+            if (TextBox1.Text.Trim() == "")
+            {
+                ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "click", "alert('请输入封头厚度！');", true);
+                return;
+            }
             if (DataBase.Exe_count("ConManager", " NumBer='" + DataOper.setTrueString(txt_lbmc.Text.Trim()) + "' ") > 0)
             {
                 ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "click", "alert('编号已存在！');", true);
@@ -91,18 +165,52 @@ namespace Web_GZJL.RJZC
                 ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "click", "alert('名称已存在！');", true);
                 return;
             }
-            //id,'" + DataOper.getlsh("ConManager", "id") + "',
-            if (DataBase.Exe_cmd("insert into ConManager(NumBer,ConName,JiantiHoudu,FengtouHoudu,BudianNum,YonghuName) values('" + DataOper.setTrueString(txt_lbmc.Text.Trim()) + "','" + DataOper.setTrueString(txt_lbmcbz.Text.Trim()) + "','" + DataOper.setTrueString(txt_ema.Text.Trim()) + "','" + DataOper.setTrueString(TextBox3.Text.Trim()) + "','" + DataOper.setTrueString(TextBox1.Text.Trim()) + "','" + DataOper.setTrueString(TextBox4.Text.Trim()) + "')"))
+           // orgname.SelectedIndex = orgname.Items.IndexOf(orgname.Items.FindByValue(myReader[0].ToString()));
+            // 编号生成 
+            string id = DataOper.getlsh("ConManager", "id");
+            string path = "~" + urlconvertor(Qrcode.Generate1(DataOper.setTrueString("RQ-" + id)));
+            string str = "insert into ConManager(id,NumBer,ConName," +
+               "JiantiHoudu," +
+               "FengtouHoudu," +
+               "BudianNum," +
+               "YonghuName," +
+               "Image)" +
+               " values('"
+               + DataOper.setTrueString(id) + "','"
+               + DataOper.setTrueString(txt_lbmc.Text.Trim()) + "','"
+               + DataOper.setTrueString(txt_lbmcbz.Text.Trim()) + "','"
+               + DataOper.setTrueString(txt_ema.Text.Trim()) + "','"
+               + DataOper.setTrueString(TextBox3.Text.Trim()) + "','"
+               + DataOper.setTrueString(TextBox1.Text.Trim()) + "','"
+               + DataOper.setTrueString(orgname1.Text.Trim()) + "','"
+               + DataOper.setTrueString(path.Trim()) + "')";
+            if (DataBase.Exe_cmd(str))
             {
-                // ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "click", "alert('添加成功！');", true);
+                ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "click", "alert('添加成功！');", true);
             }
             else
             {
-                ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "click", "alert('容器信息添加失败！');", true);
+                ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "click", "alert('容器信息添加失败！"+str+"');", true);
             }
 
             clear();
             getData();
+        }
+        // 本地路径转换成URL相对路径
+        private string urlconvertor(string imagesurl1)
+        {
+            string tmpRootDir = Server.MapPath(System.Web.HttpContext.Current.Request.ApplicationPath.ToString());//获取程序根目录
+            string imagesurl2 = imagesurl1.Replace(tmpRootDir, ""); //转换成相对路径
+            imagesurl2 = imagesurl2.Replace(@"\", @"/");
+            //imagesurl2 = imagesurl2.Replace(@"Aspx_Uc/", @"");
+            return imagesurl2;
+        }
+        // 相对路径转换成服务器本地物理路径
+        private string urlconvertorlocal(string imagesurl1)
+        {
+            string tmpRootDir = Server.MapPath(System.Web.HttpContext.Current.Request.ApplicationPath.ToString());//获取程序根目录
+            string imagesurl2 = tmpRootDir + imagesurl1.Replace(@"/", @"\"); //转换成绝对路径
+            return imagesurl2;
         }
         /// <summary>
         /// 取消GridView1
@@ -169,7 +277,7 @@ namespace Web_GZJL.RJZC
 
             if (DataBase.Exe_cmd("update ConManager set NumBer='" + DataOper.setTrueString(mc.Text.Trim()) + "',ConName='" + DataOper.setTrueString(bz.Text.Trim()) + "',JiantiHoudu='" + DataOper.setTrueString(th.Text.Trim()) + "',FengtouHoudu='" + DataOper.setTrueString(fh.Text.Trim()) + "',BudianNum='" + DataOper.setTrueString(bd.Text.Trim()) + "',YonghuName='" + DataOper.setTrueString(un.Text.Trim()) + "'    where id='" + GridView1.DataKeys[e.RowIndex].Value.ToString() + "'"))
             {
-                //ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "click", "alert('编辑成功！');", true);
+               ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "click", "alert('编辑成功！');", true);
             }
             else
             {
@@ -189,7 +297,7 @@ namespace Web_GZJL.RJZC
             txt_ema.Text = "";
             TextBox3.Text = "";
             TextBox1.Text = "";
-            TextBox4.Text = "";
+            
         }
 
         #region 查询
@@ -250,16 +358,16 @@ namespace Web_GZJL.RJZC
                     sql += " AND  BudianNum  LIKE  '%" + DataOper.setTrueString(TextBox1.Text.Trim()) + "%'";
                 }
             }
-            if (TextBox4.Text.Trim() != "")
+            if (orgname1.Text.Trim() != ""&&orgname1.SelectedIndex!=0)
             {
                 if (sql == "")
                 {
-                    sql += "   YonghuName  LIKE  '%" + DataOper.setTrueString(TextBox4.Text.Trim()) + "%'";
+                    sql += "   YonghuName  LIKE  '%" + DataOper.setTrueString(orgname1.Text.Trim()) + "%'";
 
                 }
                 else
                 {
-                    sql += " AND  YonghuName  LIKE  '%" + DataOper.setTrueString(TextBox4.Text.Trim()) + "%'";
+                    sql += " AND  YonghuName  LIKE  '%" + DataOper.setTrueString(orgname1.Text.Trim()) + "%'";
                 }
             }
 
@@ -267,6 +375,11 @@ namespace Web_GZJL.RJZC
 
             ViewState["where"] = sql;
             getData();
+        }
+
+        protected void orgname_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
 
         #endregion
@@ -291,26 +404,25 @@ namespace Web_GZJL.RJZC
 
         protected void btn_WT_Click(object sender, EventArgs e)
         {
-            //foreach (GridViewRow gvRow in GridView1.Rows)
-            //{
-            //    int datakey = Convert.ToInt32(GridView1.DataKeys[gvRow.RowIndex].Value.ToString());
-            //}
-
-
-            //StringBuilder deptIDs = new StringBuilder();
+          
             foreach (GridViewRow gvRow in GridView1.Rows)
             {
                 CheckBox chk = (CheckBox)gvRow.FindControl("chkItem");
                 //全选chkItem.Checked = chkAll.Checked;
 
                 if (chk.Checked)
-                {//GridView1.DataKeys[gvRow.RowIndex]["RequestID"].ToString().Trim()
-                    //deptIDs.Append(",").Append(GridView1.DataKeys[gvRow.RowIndex].Value.ToString().Trim());
-              
-                if (DataBase.Exe_cmd("insert into entrust(cpid,cptype,etst,state) values('" + GridView1.DataKeys[gvRow.RowIndex].Value.ToString().Trim() + "','容器','" + DateTime.Now.ToString() + "','待检验')"))
+                {
+                    string id = DataOper.getlsh("entrust", "id");
+                    var cpid = GridView1.DataKeys[gvRow.RowIndex].Value.ToString().Trim();
+                    var stt = "insert into entrust(id,cpid,cptype,etst,state) values('" 
+                        + id + "','" + cpid + "',"+
+                        "'容器','" + DateTime.Now.ToString() + "','待检验')";
+                if (DataBase.Exe_cmd(stt))
                 {
                     if (DataBase.Exe_cmd("update ConManager set state='已委托'     where id='" + GridView1.DataKeys[gvRow.RowIndex].Value.ToString().Trim() + "'"))
-                    { }
+                    {
+                            ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "click", "alert('信息委托成功！');", true);
+                        }
                 }
             else
             {
